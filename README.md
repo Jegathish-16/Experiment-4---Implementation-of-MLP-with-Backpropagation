@@ -118,7 +118,75 @@ Normalize our dataset.
 8. Finally, call the functions confusion_matrix(), and the classification_report() in order to evaluate the performance of our classifier.
 
 ## PROGRAM 
+```
+Developed By: Jegathish S
+Reg.No: 212221230041
 
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder,StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+df = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/Semester 3/Neural Networks/Exp_4/IRIS.csv")
+df
+
+# Takes first 4 columns and assign them to variable "X"
+# X = df.iloc[:,:4]
+X = df[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]
+
+# Takes first 5th columns and assign them to variable "Y". Object dtype refers to strings.
+# y = df.select_dtypes(include=[object])  
+y = df['species']
+
+
+X.head()
+y.head()
+
+print(y.unique())
+
+le = LabelEncoder()
+y = le.fit_transform(y)
+y
+
+# 80% - training data and 20% - test data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+
+# Feature scaling
+scaler = StandardScaler()  
+scaler.fit(X_train)
+
+X_train = scaler.transform(X_train)  
+X_test = scaler.transform(X_test)
+
+mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)  
+mlp.fit(X_train, y_train)  
+predictions = mlp.predict(X_test) 
+
+print(predictions)
+
+print(confusion_matrix(y_test,predictions))
+
+print(classification_report(y_test,predictions))
+```
 ## OUTPUT 
+### Reading Dataset
+![output](s1.png)
+
+### Transforming Categorical into numerical values for Y
+![output](s2.png)
+
+### Predictions
+![output](s3.png)
+
+### Accuracy
+![output](s4.png)
+
+### Confusion Matrix
+![output](s5.png)
+
+### Classification Report
+![output](s6.png)
 
 ## RESULT
+Thus a Multilayer Perceptron with Backpropagation is implemented for Multi classification
